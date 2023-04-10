@@ -51,3 +51,17 @@ function getActivity($id) {
 
     return $row;
 }
+
+function checkRecord($id) {
+    global $db;
+
+    $stmt = $db->prepare("SELECT * FROM activities WHERE `index` = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute([$id]);
+    $stmt->store_result();
+
+    if ($stmt->num_rows == 0) {
+        return false;
+    }
+    return true;
+}
