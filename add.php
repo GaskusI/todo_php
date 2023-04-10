@@ -1,36 +1,16 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$db = new mysqli("localhost", "root", "", "todo");
-	$stmt = $db->prepare("INSERT INTO activities (activity) VALUES (?)");
-	$stmt->bind_param("s", $_POST['activity']);
-	$stmt->execute();
-	mysqli_close($db);
+require_once 'vendor/autoload.php';
+require_once 'db.php';
 
-	// Redirect back to the main page
-	header("Location: index.php");
-	exit();
+$loader = new \Twig\Loader\FilesystemLoader('templates');
+$twig = new \Twig\Environment($loader);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $activity = $_POST['activity'];
+    addActivity($activity);
+    header("Location: index.php");
+    exit;
 }
 
-?>
-
-<html>
-<head>
-	<link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-
-<div class="container">
-	<h1>Add New Activity</h1>
-
-	<form method="post">
-		<div class="form-group">
-			<label for="activity">Activity:</label>
-			<input type="text" class="form-control" name="activity" required>
-		</div>
-		<button type="submit" class="btn btn-primary">Add</button>
-	</form>
-</div>
-
-</body>
-</html>
+echo $twig->render('add.twig');

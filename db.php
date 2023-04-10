@@ -1,12 +1,8 @@
 <?php
 
 $db = new mysqli("localhost", "root", "", "todo");
-$array = array();
-
-function getData() {
-
+function getTodos() {
     global $db;
-    global $array;
 
     $stmt = $db->prepare('SELECT * FROM activities');
     $stmt->execute();
@@ -17,8 +13,41 @@ function getData() {
         $array[] = $row;
     }
 
-    mysqli_close($db);
-
+    return $array;
 }
 
-?>
+function updateActivity($id, $activity) {
+    global $db;
+
+    $stmt = $db->prepare("UPDATE activities SET activity = ? WHERE `index` = ?");
+    $stmt->bind_param("si", $activity, $id);
+    $stmt->execute();
+}
+
+function deleteActivity($id) {
+    global $db;
+    
+    $stmt = $db->prepare("DELETE FROM activities WHERE `index` = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+}
+
+function addActivity() {
+    global $db;
+    
+    $stmt = $db->prepare("INSERT INTO activities (activity) VALUES (?)");
+	$stmt->bind_param("s", $_POST['activity']);
+	$stmt->execute();
+}
+
+function getActivity($id) {
+    global $db;
+    
+    $stmt = $db->prepare("SELECT * FROM activities WHERE `index` = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    return $row;
+}

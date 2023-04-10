@@ -1,0 +1,35 @@
+{% include 'header.twig' %}
+
+<body>
+<div class="container">
+    <table id="table" class="table table-bordered table-striped table-dark">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Activity</th>
+            <th>Time created</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for todo in todos %}
+            <tr id="{{ todo.index }}">
+                <td>{{ todo.index }}</td>
+                <td>{{ todo.activity }}</td>
+                <td>{{ todo.time_created }}</td>
+                <td>
+                    <a href="edit.php?id={{ todo.index }}" class="btn btn-primary">Edit</a>
+                    <a href="delete.php?id={{ todo.index }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this activity?')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center">
+        <a href="add.php" class="btn btn-success">Add New Activity</a>
+    </div>
+</div>
+
+
+</body>
+</html>
