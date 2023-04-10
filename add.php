@@ -1,7 +1,6 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// The form was submitted, so add the new activity to the database
 	$db = new mysqli("localhost", "root", "", "todo");
 	$stmt = $db->prepare("INSERT INTO activities (activity) VALUES (?)");
 	$stmt->bind_param("s", $_POST['activity']);
